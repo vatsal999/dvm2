@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:dvm2/screens/card.dart';
@@ -12,6 +13,7 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
+  final item = List<String>.generate(10, (i) => ' Item $i');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +22,7 @@ class _homeState extends State<home> {
         children: <Widget>[
           Image(image: AssetImage("assets/images/lines.png")),
           Padding(
-              padding: EdgeInsets.fromLTRB(20, 80, 16, 46),
+              padding: EdgeInsets.fromLTRB(20, 80, 16, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +39,7 @@ class _homeState extends State<home> {
                   ),
                   TextField(
                       decoration: InputDecoration(
-                          constraints: BoxConstraints(maxHeight: 40),
+                          // constraints: BoxConstraints(maxHeight: 40),
                           filled: true,
                           hintText: "Search for name...",
                           hintStyle:
@@ -51,7 +53,34 @@ class _homeState extends State<home> {
                   SizedBox(
                     height: 73,
                   ),
-                  UserCard(),
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: 10,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return UserCard(
+                              isFriend: true,
+                              name: "Vatsal",
+                              email: "aeirst@me",
+                              street: "Kulas Light",
+                              suite: "Apt. 556",
+                              city: "Gwenborough",
+                              zipcode: "92998-3874",
+                              long: 81.1496,
+                              lat: -37.3159);
+                        }),
+                  ),
+                  // UserCard(
+                  //     isFriend: true,
+                  //     name: "Vatsal",
+                  //     email: "aeirst@me",
+                  //     street: "Kulas Light",
+                  //     suite: "Apt. 556",
+                  //     city: "Gwenborough",
+                  //     zipcode: "92998-3874",
+                  //     long: 81.1496,
+                  //     lat: -37.3159),
                 ],
               )),
           // SvgPicture.asset(

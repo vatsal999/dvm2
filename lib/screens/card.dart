@@ -3,7 +3,20 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class UserCard extends StatefulWidget {
-  UserCard({super.key});
+  String name, email, street, suite, city, zipcode;
+  bool isFriend = false;
+  double long, lat;
+  UserCard(
+      {super.key,
+      this.isFriend = false,
+      required this.name,
+      required this.email,
+      required this.street,
+      required this.suite,
+      required this.city,
+      required this.zipcode,
+      required this.long,
+      required this.lat});
 
   @override
   State<UserCard> createState() => _UserCardState();
@@ -35,28 +48,28 @@ class _UserCardState extends State<UserCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Name",
+                "${widget.name}",
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white),
+                    color: (widget.isFriend) ? Colors.amber : Colors.white),
               ),
               SizedBox(
                 height: 12,
               ),
               Text(
-                "email",
+                "${widget.email}",
                 style: TextStyle(color: Colors.amberAccent, fontSize: 14),
               ),
               SizedBox(
                 height: 12,
               ),
               Text(
-                "street - suite",
+                "${widget.street} - ${widget.suite}",
                 style: TextStyle(color: Colors.white),
               ),
               Text(
-                "city - zipcode",
+                "${widget.city} - ${widget.zipcode}",
                 style: TextStyle(color: Colors.white),
               ),
               SizedBox(
@@ -66,11 +79,11 @@ class _UserCardState extends State<UserCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "long",
+                    "${widget.long}",
                     style: TextStyle(color: Colors.white),
                   ),
                   Text(
-                    "lat",
+                    "${widget.lat}",
                     style: TextStyle(color: Colors.white),
                   )
                 ],
