@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:dvm2/screens/card.dart';
 import 'package:dvm2/user_model.dart';
+import 'package:dvm2/utils.dart';
 
 class home extends StatefulWidget {
   const home({super.key});
@@ -20,7 +21,7 @@ class _homeState extends State<home> {
   void initState() {
     super.initState();
     futureUserData = fetchUser();
-    print(futureUserData);
+    // print(futureUserData);
   }
 
   final item = List<String>.generate(10, (i) => ' Item $i');
@@ -92,38 +93,12 @@ class _homeState extends State<home> {
                       } else if (snapshot.hasError) {
                         return Text(snapshot.error.toString());
                       }
-                      return const CircularProgressIndicator();
-                      ;
+                      return const Center(
+                          child: const CircularProgressIndicator(
+                        color: amberAccent,
+                      ));
                     },
                   ),
-                  // Expanded(
-                  //   child: ListView.builder(
-                  //       itemCount: 10,
-                  //       scrollDirection: Axis.vertical,
-                  //       shrinkWrap: true,
-                  //       itemBuilder: (BuildContext context, int index) {
-                  //         return UserCard(
-                  //             isFriend: true,
-                  //             name: "Vatsal",
-                  //             email: "aeirst@me",
-                  //             street: "Kulas Light",
-                  //             suite: "Apt. 556",
-                  //             city: "Gwenborough",
-                  //             zipcode: "92998-3874",
-                  //             long: 81.1496,
-                  //             lat: -37.3159);
-                  //       }),
-                  // ),
-                  // UserCard(
-                  //     isFriend: true,
-                  //     name: "Vatsal",
-                  //     email: "aeirst@me",
-                  //     street: "Kulas Light",
-                  //     suite: "Apt. 556",
-                  //     city: "Gwenborough",
-                  //     zipcode: "92998-3874",
-                  //     long: 81.1496,
-                  //     lat: -37.3159),
                 ],
               )),
           // SvgPicture.asset(

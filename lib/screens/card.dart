@@ -1,3 +1,4 @@
+import 'package:dvm2/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -26,20 +27,46 @@ class _UserCardState extends State<UserCard> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
-        height: 192,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromRGBO(255, 168, 0, 0.13),
-              Color.fromRGBO(231, 153, 0, 0.1),
-              Color.fromRGBO(158, 105, 0, 0),
-            ],
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
+          height: 192,
+          decoration: BoxDecoration(
+            gradient: RadialGradient(
+              center: Alignment(0.902, 1.1554),
+              radius: 1.3374,
+              colors: [
+                Color.fromRGBO(255, 208, 0, 0.22),
+                Color.fromRGBO(54, 54, 54, 0),
+              ],
+              stops: [0.0, 1.0],
+            ),
+            borderRadius: BorderRadius.circular(20),
           ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
+          // nested Containers to implement 2 radial gradients
+          child: Container(
+            decoration: BoxDecoration(
+              // way to implement inner shadows
+              boxShadow: [
+                const BoxShadow(
+                  color: Color.fromRGBO(255, 203, 102, 0.15),
+                ),
+                const BoxShadow(
+                  color: Colors.transparent,
+                  spreadRadius: -10.0,
+                  blurRadius: 5.0,
+                ),
+              ],
+              gradient: RadialGradient(
+                center: Alignment(0.898, 0.026),
+                radius: 1.6,
+                colors: [
+                  Color.fromRGBO(255, 168, 0, 0.13),
+                  Color.fromRGBO(231, 153, 0, 0.1),
+                  Color.fromRGBO(158, 105, 0, 0),
+                ],
+                stops: [0.0, 0.6414, 1.0],
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+          )),
       Padding(
         padding: EdgeInsets.fromLTRB(21, 26, 37, 21),
         child: Column(
