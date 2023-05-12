@@ -68,10 +68,13 @@ class _homeState extends State<home> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Expanded(
-                          child: ListView.builder(
+                          child: ListView.separated(
                               itemCount: snapshot.data!.length,
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const SizedBox(height: 16),
                               itemBuilder: (BuildContext context, int index) {
                                 return UserCard(
                                   isFriend: false,
