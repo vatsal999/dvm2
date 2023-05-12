@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:dvm2/screens/card.dart';
+import 'package:dvm2/user_model.dart';
 
 class home extends StatefulWidget {
   const home({super.key});
@@ -13,6 +15,14 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
+  late Future<List<User>> futureUserData;
+  @override
+  void initState() {
+    super.initState();
+    futureUserData = fetchUser();
+    print(futureUserData);
+  }
+
   final item = List<String>.generate(10, (i) => ' Item $i');
   @override
   Widget build(BuildContext context) {
@@ -53,24 +63,54 @@ class _homeState extends State<home> {
                   SizedBox(
                     height: 73,
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: 10,
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return UserCard(
-                              isFriend: true,
-                              name: "Vatsal",
-                              email: "aeirst@me",
-                              street: "Kulas Light",
-                              suite: "Apt. 556",
-                              city: "Gwenborough",
-                              zipcode: "92998-3874",
-                              long: 81.1496,
-                              lat: -37.3159);
-                        }),
+                  FutureBuilder<List<User>>(
+                    future: fetchUser(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Expanded(
+                          child: ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return UserCard(
+                                  isFriend: false,
+                                  name: snapshot.data![index].name,
+                                  email: snapshot.data![index].email,
+                                  street: snapshot.data![index].street,
+                                  suite: snapshot.data![index].suite,
+                                  city: snapshot.data![index].city,
+                                  zipcode: snapshot.data![index].zipcode,
+                                  long: snapshot.data![index].long,
+                                  lat: snapshot.data![index].lat,
+                                );
+                              }),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
+                      }
+                      return const CircularProgressIndicator();
+                      ;
+                    },
                   ),
+                  // Expanded(
+                  //   child: ListView.builder(
+                  //       itemCount: 10,
+                  //       scrollDirection: Axis.vertical,
+                  //       shrinkWrap: true,
+                  //       itemBuilder: (BuildContext context, int index) {
+                  //         return UserCard(
+                  //             isFriend: true,
+                  //             name: "Vatsal",
+                  //             email: "aeirst@me",
+                  //             street: "Kulas Light",
+                  //             suite: "Apt. 556",
+                  //             city: "Gwenborough",
+                  //             zipcode: "92998-3874",
+                  //             long: 81.1496,
+                  //             lat: -37.3159);
+                  //       }),
+                  // ),
                   // UserCard(
                   //     isFriend: true,
                   //     name: "Vatsal",

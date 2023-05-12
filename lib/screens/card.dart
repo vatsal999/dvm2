@@ -3,9 +3,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class UserCard extends StatefulWidget {
-  String name, email, street, suite, city, zipcode;
+  String name, email, street, suite, city, zipcode, long, lat;
   bool isFriend = false;
-  double long, lat;
   UserCard(
       {super.key,
       this.isFriend = false,
