@@ -20,6 +20,7 @@ class _homeState extends State<home> {
   String searchString = "";
   final searchController = TextEditingController();
   double _value = 0;
+  bool is_range_filter = false;
 
   @override
   void initState() {
@@ -92,6 +93,8 @@ class _homeState extends State<home> {
                               TextStyle(color: Color(0xFFC0C0C0), fontSize: 16),
                           prefixIcon: Icon(Icons.search),
                           prefixIconColor: Color(0xFFC0C0C0),
+                          suffixIcon: Icon(Icons.close),
+                          suffixIconColor: Color(0xFFC0C0C0),
                           fillColor: Color.fromARGB(255, 49, 44, 5),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -112,6 +115,24 @@ class _homeState extends State<home> {
                       });
                     },
                   ),
+                  Align(
+                      alignment: Alignment.center,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll<Color>(gradDark),
+                          foregroundColor:
+                              MaterialStatePropertyAll<Color>(amberAccent),
+                        ),
+                        child: Text(!is_range_filter
+                            ? 'Enable Filter'
+                            : 'Disable Filter'),
+                        onPressed: () {
+                          setState(() {
+                            is_range_filter = !is_range_filter;
+                          });
+                        },
+                      )),
                   SizedBox(
                     height: 10,
                   ),
@@ -128,16 +149,19 @@ class _homeState extends State<home> {
                                   (BuildContext context, int index) =>
                                       const SizedBox(height: 16),
                               itemBuilder: (BuildContext context, int index) {
+                                // TODO: unfuck this mess
                                 return (snapshot.data![index].name
-                                        .toLowerCase()
-                                        .contains(searchString.toLowerCase()))
-                                    // &&
-                                    // double.parse(
-                                    //         snapshot.data![index].lng) <
-                                    //     _value + 10 &&
-                                    // double.parse(
-                                    //         snapshot.data![index].lng) >
-                                    //     _value - 10)
+                                            .toLowerCase()
+                                            .contains(
+                                                searchString.toLowerCase()) &&
+                                        (is_range_filter
+                                            ? (double.parse(snapshot
+                                                        .data![index].lng) <
+                                                    _value + 10 &&
+                                                double.parse(snapshot
+                                                        .data![index].lng) >
+                                                    _value - 10)
+                                            : true))
                                     ? GestureDetector(
                                         onTap: () {
                                           if (!snapshot.data![index].isFriend) {
