@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class UserCard extends StatefulWidget {
-  String name, email, street, suite, city, zipcode, long, lat;
+  String name, email, street, suite, city, zipcode, lng, lat;
   bool isFriend = false;
   UserCard(
       {super.key,
@@ -15,7 +15,7 @@ class UserCard extends StatefulWidget {
       required this.suite,
       required this.city,
       required this.zipcode,
-      required this.long,
+      required this.lng,
       required this.lat});
 
   @override
@@ -29,15 +29,7 @@ class _UserCardState extends State<UserCard> {
       Container(
           height: 192,
           decoration: BoxDecoration(
-            gradient: RadialGradient(
-              center: Alignment(0.902, 1.1554),
-              radius: 1.3374,
-              colors: [
-                Color.fromRGBO(255, 208, 0, 0.22),
-                Color.fromRGBO(54, 54, 54, 0),
-              ],
-              stops: [0.0, 1.0],
-            ),
+            gradient: cardGrad1,
             borderRadius: BorderRadius.circular(20),
           ),
           // nested Containers to implement 2 radial gradients
@@ -54,16 +46,7 @@ class _UserCardState extends State<UserCard> {
                   blurRadius: 5.0,
                 ),
               ],
-              gradient: RadialGradient(
-                center: Alignment(0.898, 0.026),
-                radius: 1.6,
-                colors: [
-                  Color.fromRGBO(255, 168, 0, 0.13),
-                  Color.fromRGBO(231, 153, 0, 0.1),
-                  Color.fromRGBO(158, 105, 0, 0),
-                ],
-                stops: [0.0, 0.6414, 1.0],
-              ),
+              gradient: cardGrad2,
               borderRadius: BorderRadius.circular(20),
             ),
           )),
@@ -105,7 +88,7 @@ class _UserCardState extends State<UserCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${widget.long}",
+                    "${widget.lng}",
                     style: TextStyle(color: Colors.white),
                   ),
                   Text(
