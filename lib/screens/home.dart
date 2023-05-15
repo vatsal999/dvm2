@@ -20,6 +20,9 @@ class home extends StatefulWidget {
 class _homeState extends State<home> {
   late Future<List<User>> futureUserData;
   List<int> dbIfFriendList = [];
+  String searchString = "";
+  final searchController = TextEditingController();
+  double _value = 0;
 
   @override
   void initState() {
@@ -44,7 +47,7 @@ class _homeState extends State<home> {
     List<User> myResList = [];
     List<int> temp = [];
     temp = await getFriendUsersIds();
-    print(temp);
+    // print(temp);
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -98,6 +101,13 @@ class _homeState extends State<home> {
                     height: 40,
                   ),
                   TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          searchString = value;
+                        });
+                      },
+                      controller: searchController,
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                       decoration: InputDecoration(
                           // constraints: BoxConstraints(maxHeight: 40),
                           filled: true,
@@ -111,7 +121,23 @@ class _homeState extends State<home> {
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none))),
                   SizedBox(
-                    height: 73,
+                    height: 40,
+                  ),
+                  Slider(
+                    min: -200.0,
+                    max: 200.0,
+                    value: _value,
+                    activeColor: Colors.amber,
+                    inactiveColor: Colors.grey,
+                    thumbColor: amberAccent,
+                    onChanged: (value) {
+                      setState(() {
+                        _value = value;
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 30,
                   ),
                   FutureBuilder<List<User>>(
                     future: futureUserData,
@@ -126,33 +152,36 @@ class _homeState extends State<home> {
                                   (BuildContext context, int index) =>
                                       const SizedBox(height: 16),
                               itemBuilder: (BuildContext context, int index) {
-                                return GestureDetector(
-                                    onTap: () {
-                                      if (!snapshot.data![index].isFriend) {
-                                        createUser(user: snapshot.data![index]);
-                                      } else {
-                                        deleteUser(user: snapshot.data![index]);
-                                      }
-                                      setState(() {
-                                        snapshot.data![index].isFriend =
-                                            !snapshot.data![index].isFriend;
-                                      });
-                                    },
-                                    child: UserCard(
-                                      name: snapshot.data![index].name,
-                                      email: snapshot.data![index].email,
-                                      street: snapshot.data![index].street,
-                                      suite: snapshot.data![index].suite,
-                                      city: snapshot.data![index].city,
-                                      zipcode: snapshot.data![index].zipcode,
-                                      lng: snapshot.data![index].lng,
-                                      lat: snapshot.data![index].lat,
-                                      // isFriend: checkIfFriend(
-                                      //         snapshot.data![index].id)
-                                      //     ? true
-                                      //     : false,
-                                      isFriend: snapshot.data![index].isFriend,
-                                    ));
+                                return snapshot.data![index].name
+                                        .contains(searchString)
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          if (!snapshot.data![index].isFriend) {
+                                            createUser(
+                                                user: snapshot.data![index]);
+                                          } else {
+                                            deleteUser(
+                                                user: snapshot.data![index]);
+                                          }
+                                          setState(() {
+                                            snapshot.data![index].isFriend =
+                                                !snapshot.data![index].isFriend;
+                                          });
+                                        },
+                                        child: UserCard(
+                                          name: snapshot.data![index].name,
+                                          email: snapshot.data![index].email,
+                                          street: snapshot.data![index].street,
+                                          suite: snapshot.data![index].suite,
+                                          city: snapshot.data![index].city,
+                                          zipcode:
+                                              snapshot.data![index].zipcode,
+                                          lng: snapshot.data![index].lng,
+                                          lat: snapshot.data![index].lat,
+                                          isFriend:
+                                              snapshot.data![index].isFriend,
+                                        ))
+                                    : Container();
                               }),
                         );
                       } else if (snapshot.hasError) {
