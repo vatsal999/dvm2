@@ -26,17 +26,6 @@ Future deleteUser({required User user}) async {
   await docUser.delete();
 }
 
-checkWithFirebaseIfFriend(int user_id) async {
-  var document = await FirebaseFirestore.instance
-      .collection('FriendUsers')
-      .doc(user_id.toString())
-      .get();
-  if (document.exists) {
-    return true;
-  } else
-    return false;
-}
-
 getFriendUsersIds() async {
   List<int> temp = [];
   QuerySnapshot mysnapshot =

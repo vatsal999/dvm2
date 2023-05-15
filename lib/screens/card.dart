@@ -89,13 +89,31 @@ class _UserCardState extends State<UserCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "${widget.lng}",
-                    style: TextStyle(color: Colors.white),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_pin,
+                        color: Colors.white,
+                        size: 16.0,
+                      ),
+                      Text(
+                        " ${widget.lng}",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "${widget.lat}",
-                    style: TextStyle(color: Colors.white),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.access_time_filled_rounded,
+                        color: Colors.white,
+                        size: 16.0,
+                      ),
+                      Text(
+                        " ${widget.lat}",
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
                   )
                 ],
               )

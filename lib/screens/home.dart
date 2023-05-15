@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:dvm2/screens/card.dart';
 import 'package:dvm2/user_model.dart';
 import 'package:dvm2/dbhelper.dart';
@@ -27,19 +24,8 @@ class _homeState extends State<home> {
   @override
   void initState() {
     super.initState();
-    // update friend info from firebase
-    // smolfn();
-    // print(dbIfFriendList);
     futureUserData = fetchUser();
   }
-
-  // Future<void> smolfn() async {
-  //   List<int> temp = [];
-  //   temp = await getFriendUsersIds();
-  //   setState(() {
-  //     dbIfFriendList = temp;
-  //   });
-  // }
 
   Future<List<User>> fetchUser() async {
     var url = Uri.parse('https://jsonplaceholder.typicode.com/users');
@@ -67,16 +53,6 @@ class _homeState extends State<home> {
     }
   }
 
-  // bool checkIfFriend(int id) {
-  //   for (int i = 0; i < dbIfFriendList.length; i++) {
-  //     if (dbIfFriendList[i] == id) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
-
-  final item = List<String>.generate(10, (i) => ' Item $i');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,7 +113,7 @@ class _homeState extends State<home> {
                     },
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 10,
                   ),
                   FutureBuilder<List<User>>(
                     future: futureUserData,
@@ -152,8 +128,16 @@ class _homeState extends State<home> {
                                   (BuildContext context, int index) =>
                                       const SizedBox(height: 16),
                               itemBuilder: (BuildContext context, int index) {
-                                return snapshot.data![index].name
-                                        .contains(searchString)
+                                return (snapshot.data![index].name
+                                        .toLowerCase()
+                                        .contains(searchString.toLowerCase()))
+                                    // &&
+                                    // double.parse(
+                                    //         snapshot.data![index].lng) <
+                                    //     _value + 10 &&
+                                    // double.parse(
+                                    //         snapshot.data![index].lng) >
+                                    //     _value - 10)
                                     ? GestureDetector(
                                         onTap: () {
                                           if (!snapshot.data![index].isFriend) {
@@ -181,7 +165,9 @@ class _homeState extends State<home> {
                                           isFriend:
                                               snapshot.data![index].isFriend,
                                         ))
-                                    : Container();
+                                    : Container(
+                                        height: 0,
+                                      );
                               }),
                         );
                       } else if (snapshot.hasError) {
@@ -195,12 +181,6 @@ class _homeState extends State<home> {
                   ),
                 ],
               )),
-          // SvgPicture.asset(
-          //   "assets/images/line_graphic.svg",
-          //   alignment: Alignment.center,
-          //   width: MediaQuery.of(context).size.width * 3,
-          //   height: MediaQuery.of(context).size.height * 3,
-          // ),
         ],
       ),
     );
