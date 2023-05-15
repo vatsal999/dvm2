@@ -19,30 +19,59 @@ class home extends StatefulWidget {
 
 class _homeState extends State<home> {
   late Future<List<User>> futureUserData;
-  List<User> displaylist = [];
+  List<int> dbIfFriendList = [];
 
   @override
   void initState() {
     super.initState();
+    // update friend info from firebase
+    // smolfn();
+    // print(dbIfFriendList);
     futureUserData = fetchUser();
-    print(displaylist);
   }
+
+  // Future<void> smolfn() async {
+  //   List<int> temp = [];
+  //   temp = await getFriendUsersIds();
+  //   setState(() {
+  //     dbIfFriendList = temp;
+  //   });
+  // }
 
   Future<List<User>> fetchUser() async {
     var url = Uri.parse('https://jsonplaceholder.typicode.com/users');
     final response = await http.get(url);
+    List<User> myResList = [];
+    List<int> temp = [];
+    temp = await getFriendUsersIds();
+    print(temp);
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((data) => User.fromJson(data)).toList();
+      myResList =
+          await jsonResponse.map((data) => User.fromJson(data)).toList();
+
+      for (int i = 0; i < myResList.length; i++) {
+        if (temp.contains(myResList[i].id)) {
+          myResList[i].isFriend = true;
+        } else {
+          myResList[i].isFriend = false;
+        }
+      }
+      return myResList;
     } else {
       throw Exception('Failed to load userdata');
     }
   }
 
-  void friend_toggle(int id) {
-    print("hello");
-  }
+  // bool checkIfFriend(int id) {
+  //   for (int i = 0; i < dbIfFriendList.length; i++) {
+  //     if (dbIfFriendList[i] == id) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   final item = List<String>.generate(10, (i) => ' Item $i');
   @override
@@ -118,6 +147,10 @@ class _homeState extends State<home> {
                                       zipcode: snapshot.data![index].zipcode,
                                       lng: snapshot.data![index].lng,
                                       lat: snapshot.data![index].lat,
+                                      // isFriend: checkIfFriend(
+                                      //         snapshot.data![index].id)
+                                      //     ? true
+                                      //     : false,
                                       isFriend: snapshot.data![index].isFriend,
                                     ));
                               }),

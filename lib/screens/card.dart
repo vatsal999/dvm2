@@ -37,8 +37,10 @@ class _UserCardState extends State<UserCard> {
             decoration: BoxDecoration(
               // way to implement inner shadows
               boxShadow: [
-                const BoxShadow(
-                  color: Color.fromRGBO(255, 203, 102, 0.15),
+                BoxShadow(
+                  color: (widget.isFriend)
+                      ? Color.fromRGBO(255, 203, 102, 0.25)
+                      : Color.fromRGBO(255, 203, 102, 0.15),
                 ),
                 const BoxShadow(
                   color: Colors.transparent,
