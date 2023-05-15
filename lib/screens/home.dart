@@ -141,6 +141,7 @@ class _homeState extends State<home> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return Expanded(
+                          // TODO: fix extra spaces when filtering list
                           child: ListView.separated(
                               itemCount: snapshot.data!.length,
                               scrollDirection: Axis.vertical,
